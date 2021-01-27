@@ -33,9 +33,7 @@ public class OwnArrayList<E> implements Iterable<E> {
     }
 
     public void add(int index, E elem) {
-        if (index >= size || size < 0) {
-            throw new IndexOutOfBoundsException(String.format(INDEX_EXCEPTION, index));
-        }
+        checkIndexValue(index);
         if (currentIndex >= size - 1) {
             size *= 2;
             initArray = Arrays.copyOf(initArray, size);
@@ -46,24 +44,18 @@ public class OwnArrayList<E> implements Iterable<E> {
     }
 
     public void set(int index, E elem) {
-        if (index >= size || size < 0) {
-            throw new IndexOutOfBoundsException(String.format(INDEX_EXCEPTION, index));
-        }
+        checkIndexValue(index);
         initArray[index] = elem;
 
     }
 
     public E get(int index) {
-        if (index >= size || size < 0) {
-            throw new IndexOutOfBoundsException(String.format(INDEX_EXCEPTION, index));
-        }
+        checkIndexValue(index);
         return (E) initArray[index];
     }
 
     public E remove(int index) {
-        if (index >= size || size < 0) {
-            throw new IndexOutOfBoundsException(String.format(INDEX_EXCEPTION, index));
-        }
+        checkIndexValue(index);
         E oldElem = (E) initArray[index];
         size -= 1;
         System.arraycopy(initArray, index + 1, initArray, index, size - index);
@@ -73,6 +65,12 @@ public class OwnArrayList<E> implements Iterable<E> {
 
     public int size() {
         return size;
+    }
+
+    private void checkIndexValue(int index) {
+        if (index >= size || size < 0) {
+            throw new IndexOutOfBoundsException(String.format(INDEX_EXCEPTION, index));
+        }
     }
 
     @Override
