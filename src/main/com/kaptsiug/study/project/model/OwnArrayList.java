@@ -27,6 +27,7 @@ public class OwnArrayList<E> implements Iterable<E> {
             size *= 2;
             initArray = Arrays.copyOf(initArray, size);
         }
+
         currentIndex++;
         initArray[currentIndex] = elem;
         return true;
@@ -34,10 +35,12 @@ public class OwnArrayList<E> implements Iterable<E> {
 
     public void add(int index, E elem) {
         checkIndexValue(index);
+
         if (currentIndex >= size - 1) {
             size *= 2;
             initArray = Arrays.copyOf(initArray, size);
         }
+
         System.arraycopy(initArray, index, initArray, index + 1, size - index);
         initArray[index] = elem;
         currentIndex++;
@@ -46,7 +49,6 @@ public class OwnArrayList<E> implements Iterable<E> {
     public void set(int index, E elem) {
         checkIndexValue(index);
         initArray[index] = elem;
-
     }
 
     public E get(int index) {
@@ -56,10 +58,21 @@ public class OwnArrayList<E> implements Iterable<E> {
 
     public E remove(int index) {
         checkIndexValue(index);
-        E oldElem = (E) initArray[index];
-        size -= 1;
-        System.arraycopy(initArray, index + 1, initArray, index, size - index);
+        E oldElem = null;
+
+        try {
+            oldElem = (E) initArray[index];
+        } catch (ClassCastException ex) {
+            ex.printStackTrace();
+        }
+        System.arraycopy(initArray, index + 1, initArray, index, size - 1 - index);
         currentIndex--;
+
+        if (size - currentIndex > 4) {
+            size = currentIndex+1;
+            initArray = Arrays.copyOf(initArray, size);
+        }
+
         return oldElem;
     }
 
